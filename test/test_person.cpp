@@ -10,20 +10,45 @@ protected:
 
 // test get_username and set_username
 TEST_F(test_person, test_username) {
+	//user name too long
+	EXPECT_FALSE(person.set_username("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklm"));
+	//user name not alphanumerical
+	EXPECT_FALSE(person.set_username("aaaa()"));
+	//user name first digit is digit
+	EXPECT_FALSE(person.set_username("2aabb"));
+	//user name is empty
+	EXPECT_FALSE(person.set_username(""));
+	//exactly 64 characters will be accepted
+	EXPECT_TRUE(person.set_username("a2222222ijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl"));
+	EXPECT_STREQ(person.get_username().c_str(), "a2222222ijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl");
 }
 
 // test get_firstname and set_firstname
 TEST_F(test_person, test_firstname) {
+	//first name too long
+	EXPECT_FALSE(person.set_firstname("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+	//first name not alphabetical
+	EXPECT_FALSE(person.set_firstname("aaaa2"));
+	//empty will be accepted
+	EXPECT_TRUE(person.set_firstname(""));
+	EXPECT_STREQ(person.get_firstname().c_str(), "");
+	//exactly 64 characters will be accepted
+	EXPECT_TRUE(person.set_firstname("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+	EXPECT_STREQ(person.get_firstname().c_str(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 }
 
 // test get_lastname and set_lastname
 TEST_F(test_person, test_lastname) {
-  EXPECT_FALSE(person.set_lastname("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklm"));
-  EXPECT_TRUE(person.set_lastname("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl"));
-  EXPECT_STREQ(person.get_lastname().c_str(), "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl");
-	EXPECT_FALSE(person.set_lastname("abcdefg0"));
-	EXPECT_FALSE(person.set_lastname("abcdefg;"));
+	//last name too long
+	EXPECT_FALSE(person.set_lastname("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+	//last name not alphabetical
+	EXPECT_FALSE(person.set_lastname("aaaa2"));
+	//empty will be accepted
 	EXPECT_TRUE(person.set_lastname(""));
+	EXPECT_STREQ(person.get_lastname().c_str(), "");
+	//exactly 64 characters will be accepted
+	EXPECT_TRUE(person.set_lastname("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+	EXPECT_STREQ(person.get_lastname().c_str(), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 }
 
 /**you may need to write more test functions.
@@ -41,6 +66,7 @@ TEST_F(test_person, test_lastname) {
 //   it will abort the whole testing which will hinder the grading process
 TEST_F(test_person, test_age) {
 	EXPECT_FALSE(person.set_age(-1));
+	EXPECT_FALSE(person.set_age(300));
 	EXPECT_TRUE(person.set_age(0));
 	EXPECT_EQ(person.get_age(), 0);
 	EXPECT_TRUE(person.set_age(127));
@@ -50,6 +76,13 @@ TEST_F(test_person, test_age) {
 
 // test get_tagline and set_tagline
 TEST_F(test_person, test_tagline) {
+	//tagline is too long (at 513 characters)
+	EXPECT_FALSE(person.set_tagline("513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513characters"));
+	EXPECT_TRUE(person.set_tagline("1qz*3"));
+	EXPECT_STREQ(person.get_tagline().c_str(), "1qz*3");
+	//empty will be accepted
+	EXPECT_TRUE(person.set_tagline(""));
+	EXPECT_STREQ(person.get_tagline().c_str(), "");
 }
 
 // test get_info and set_info

@@ -12,7 +12,7 @@ bool str_isalpha(const string str)
 bool str_isalnum(const string s)
 {
     std::string::const_iterator it = s.begin();
-    while (it != s.end() && std::isdigit(*it)) ++it;
+    while (it != s.end() && (std::isdigit(*it) || std::isalpha(*it))) ++it;
     return !s.empty() && it == s.end();
 }
 
@@ -61,9 +61,9 @@ string Person::get_info()
 bool Person::set_username(string _username)
 {
     if (str_isalnum(_username) &&
-            _username.length() <= 64 &&
-            _username.length() > 0 &&
-            isalpha(_username[0])) {
+        _username.length() <= 64 &&
+        _username.length() > 0 &&
+        isalpha(_username[0])) {
         username = _username;
         return true;
     } else {
