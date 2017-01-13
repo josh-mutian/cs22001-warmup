@@ -1,5 +1,7 @@
 #include "person.h"
 
+#include <string>
+
 bool str_isalpha(const string str)
 {
     int size = str.size();
@@ -54,7 +56,12 @@ string Person::get_tagline()
 }
 string Person::get_info()
 {
-    string ret = "";
+    string ret = string("username: ") + username +
+                 string(", firstname: ") + firstname +
+                 string(", lastname: ") + lastname +
+                 string(", age: ") + to_string(age) +
+                 string(", gender: ") + gender +
+                 string(", tagline: ") + tagline;
     return ret;
 }
 
@@ -123,17 +130,15 @@ bool Person::set_tagline(string _tagline)
 
 
 bool Person::set_info(string _username, string _firstname, string _lastname,
-                      int _age, string _tagline)
+                      int _age, string _gender, string _tagline)
 {
-    if (set_username(_username) &&
-            set_firstname(_firstname) &&
-            set_lastname(_lastname) &&
-            set_age(_age) &&
-            set_tagline(_tagline)) {
-        return true;
-    } else {
-        return false;
-    }
+    bool b1 = set_username(_username);
+    bool b2 = set_firstname(_firstname);
+    bool b3 = set_lastname(_lastname);
+    bool b4 = set_age(_age);
+    bool b5 = set_gender(_gender);
+    bool b6 = set_tagline(_tagline);
+    return b1 && b2 && b3 && b4 && b5 && b6;
 }
 
 void Person::send_msg(Person &recipient, string msg)
@@ -153,6 +158,7 @@ bool Person::read_msg()
         inbox.pop();
         return true;
     } else {
+        cout << "Inbox is empty. Cannot read any message.\n";
         return false;
     }
 }

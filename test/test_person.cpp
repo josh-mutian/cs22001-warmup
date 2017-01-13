@@ -87,11 +87,37 @@ TEST_F(test_person, test_tagline) {
 
 // test get_info and set_info
 TEST_F(test_person, test_info) {
+	EXPECT_TRUE(person.set_info("validusername", "validfirstname", "validlastname", 30, "f", "validtagline"));
+	//test get_info
+	EXPECT_STREQ(person.get_info().c_str(), "username: validusername, firstname: validfirstname, lastname: validlastname, age: 30, gender: f, tagline: validtagline");
+	//verify that valid entries of set_info could go through even if other entries are invalid
+	EXPECT_FALSE(person.set_info("username", "*illegalfirstname", "lastname", 20, "m", "tagline"));
+	EXPECT_STREQ(person.get_username().c_str(), "username");
+	EXPECT_STREQ(person.get_lastname().c_str(), "lastname");
+	EXPECT_STREQ(person.get_tagline().c_str(), "tagline");
+	EXPECT_EQ(person.get_age(), 20);
+	//verify that all types of invalid entries can be recognized
+	EXPECT_FALSE(person.set_info("*illegalusername", "firstname", "lastname", 20, "m", "tagline"));
+	EXPECT_FALSE(person.set_info("username", "firstname", "*illegallastname", 20, "m", "tagline"));
+	EXPECT_FALSE(person.set_info("username", "firstname", "lastname", 20, "m", "513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513characters"));
+	EXPECT_FALSE(person.set_info("username", "firstname", "lastname", 128, "m", "tagline"));
+	EXPECT_FALSE(person.set_info("username", "firstname", "lastname", 25, "notagender", "tagline"));
+	//test get_info
+	EXPECT_STREQ(person.get_info().c_str(), "username: username, firstname: firstname, lastname: lastname, age: 25, gender: m, tagline: tagline");
 }
 
 // test send_msg and read_msg
 //   to make your code shorter, we suggest combining these tests together; you
 //   can also separate them into several test cases
 TEST_F(test_person, test_msg) {
+	//eye ball testing
+	person.send_msg(recipient, "test_message1\n");
+	recipient.read_msg();
+	recipient.read_msg();
+	person.send_msg(recipient, "test_message2\n");
+	person.send_msg(recipient, "test_message3\n");
+	recipient.read_msg();
+	recipient.read_msg();
+	recipient.read_msg();
 }
 

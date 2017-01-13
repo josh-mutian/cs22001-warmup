@@ -45,7 +45,7 @@ class Person {
     bool set_age(int _age);
     bool set_tagline(string _tagline);
     bool set_info(string _username, string _firstname, string _lastname,
-                  int _age, string _tagline);
+                  int _age, string _gender, string _tagline);
 
     void send_msg(Person &recipient, string msg);
     void get_msg(string msg);
