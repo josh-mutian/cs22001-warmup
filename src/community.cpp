@@ -1,5 +1,11 @@
 #include "community.h"
 
+bool isNullPerson(Person p)
+{
+    //since only null person can have an empty username
+    return p.get_username() == "";
+}
+
 Community::Community()
     : name(""), people(map<string,Person>())
 {
@@ -30,9 +36,13 @@ bool Community::set_name(string _name)
 
 bool Community::add_person(Person _person)
 {
-    contact to_add(_person.get_username(), _person);
-
-    return false;
+    const string username = _person.get_username();
+    if (isNullPerson(get_member(username))) {
+        people[username] = _person;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // return the person object for a given username
@@ -48,38 +58,56 @@ Person Community::get_member(string username)
 list<string> Community::get_all_usernames()
 {
     list<string> usernames;
-    // TODO
-    // return all usernames of members as a list
+    for (map<string,Person>::iterator it= people.begin(); it != people.end(); ++it) {
+        usernames.push_back(it->first);
+    }
     return usernames;
 }
 
 void Community::print_all_usernames()
 {
-    // TODO
-    // print all usernames of members to the console
+    list<string> usernames = get_all_usernames();
+    for (list<string>::iterator it= usernames.begin(); it != usernames.end(); ++it) {
+        cout << *it << "; ";
+    }
 }
 
 list<Person> Community::find_member(string firstname)
 {
     list<Person> ret;
-    //TODO
-    // find users with a certain first name
+    for (map<string,Person>::iterator it= people.begin(); it != people.end(); ++it) {
+        Person p = it->second;
+        if (p.get_firstname() == firstname) {
+            ret.push_back(p);
+        }
+    }
     return ret;
 }
 
 list<Person> Community::find_member(int age_lb, int age_ub)
 {
     list<Person> ret;
-    //TODO
-    // find users within certain ages [age_lb, age_ub], both lower bound and upper bound shall be inclusive
+    for (map<string,Person>::iterator it= people.begin(); it != people.end(); ++it) {
+        Person p = it->second;
+        int age = p.get_age();
+        if (age <= age_ub && age >= age_lb) {
+            ret.push_back(p);
+        }
+    }
     return ret;
 }
 
 bool Community::send_msg(list<string> usernames, string msg)
 {
-    //TODO
-    // send msg to a Person addressed by username
-    // make sure the username is validated
-    return false;
+    bool ret = true;
+    for (auto const& username : usernames) {
+        Person p = get_member(username);
+        if (!isNullPerson(p)) {
+            p.get_msg(msg);
+        } else {
+            ret = false;
+        }
+    }
+    return ret;
 }
 

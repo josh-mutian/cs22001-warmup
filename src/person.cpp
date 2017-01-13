@@ -30,6 +30,16 @@ Person::Person(string _username, string _firstname, string _lastname,
 {
 }
 
+bool Person::is_same_Person(Person p) 
+{
+    return username == p.get_username() &&
+           firstname == p.get_firstname() &&
+           lastname == p.get_lastname() &&
+           age == p.get_age() &&
+           gender == p.get_gender() &&
+           tagline == p.get_tagline();
+}
+
 string Person::get_username()
 {
     return username;
