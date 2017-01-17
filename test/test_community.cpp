@@ -6,6 +6,9 @@
 class test_community: public ::testing::Test {
 protected:
 	Community community;
+	Person p1;
+	Person p2;
+	Person p3;
 };
 
 // you should complete the following test cases
@@ -14,7 +17,7 @@ protected:
 // test get_name
 TEST_F(test_community, get_name) {
 	EXPECT_STREQ(community.get_name().c_str(), "");
-	EXPECT_FALSE(community.set_name("testinggetname"));
+	EXPECT_TRUE(community.set_name("testinggetname"));
 	EXPECT_STREQ(community.get_name().c_str(), "testinggetname");
 }
 
@@ -37,6 +40,14 @@ TEST_F(test_community, set_name) {
 
 // test add_person
 TEST_F(test_community, add_person) {
+	p1.set_username("test1");
+	EXPECT_FALSE(community.get_member("test1").is_same_person(p1));
+	EXPECT_TRUE(community.add_person(p1));
+	EXPECT_TRUE(community.get_member("test1").is_same_person(p1));
+	//adding person who is already a member should return false
+	EXPECT_FALSE(community.add_person(p1));
+	//??how to test same community
+	//??also, interleaving logic between add_person and get_member
 }
 
 // test get_all_usernames
@@ -51,6 +62,10 @@ TEST_F(test_community, find_member) {
 
 // test get_member
 TEST_F(test_community, get_member) {
+	p1.set_username("test1");
+	EXPECT_FALSE(community.get_member("test1").is_same_person(p1));
+	EXPECT_TRUE(community.add_person(p1));
+	EXPECT_TRUE(community.get_member("test1").is_same_person(p1));
 }
 
 // test send_msg

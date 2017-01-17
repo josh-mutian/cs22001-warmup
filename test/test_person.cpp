@@ -8,6 +8,36 @@ protected:
 	Person recipient;
 };
 
+// test Person constructor
+TEST_F(test_person, test_constructor) {
+	//invlid username
+	Person p1("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklm", "first", "lastname", "m", 40, "tagline");
+	EXPECT_TRUE(p1.is_null_person());
+	//invlid firstname
+	Person p2("username", "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklm", "lastname", "m", 40, "tagline");
+	EXPECT_TRUE(p2.is_null_person());
+	//invlid lastname
+	Person p3("username", "first", "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklm", "m", 40, "tagline");
+	EXPECT_TRUE(p3.is_null_person());
+	//invlid gender
+	Person p4("username", "first", "lastname", "sss", 40, "tagline");
+	EXPECT_TRUE(p4.is_null_person());
+	//invlid age
+	Person p5("username", "first", "lastname", "m", 160, "tagline");
+	EXPECT_TRUE(p5.is_null_person());
+	//invlid tagline
+	Person p6("username", "first", "lastname", "m", 40, "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklm");
+	EXPECT_TRUE(p6.is_null_person());
+
+	Person p7("username", "first", "lastname", "m", 40, "tagline");
+	EXPECT_STREQ(p7.get_username().c_str(), "username");
+	EXPECT_STREQ(p7.get_firstname().c_str(), "first");
+	EXPECT_STREQ(p7.get_lastname().c_str(), "lastname");
+	EXPECT_STREQ(p7.get_tagline().c_str(), "tagline");
+	EXPECT_STREQ(p7.get_gender().c_str(), "m");
+	EXPECT_EQ(p7.get_age(), 40);
+}
+
 // test get_username and set_username
 TEST_F(test_person, test_username) {
 	//user name too long
@@ -21,6 +51,9 @@ TEST_F(test_person, test_username) {
 	//exactly 64 characters will be accepted
 	EXPECT_TRUE(person.set_username("a2222222ijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl"));
 	EXPECT_STREQ(person.get_username().c_str(), "a2222222ijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl");
+	//invalid input should not change username
+	EXPECT_FALSE(person.set_username("aaaa()"));
+	EXPECT_STREQ(person.get_username().c_str(), "a2222222ijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkl");
 }
 
 // test get_firstname and set_firstname
@@ -31,6 +64,9 @@ TEST_F(test_person, test_firstname) {
 	EXPECT_FALSE(person.set_firstname("aaaa2"));
 	//empty will be accepted
 	EXPECT_TRUE(person.set_firstname(""));
+	EXPECT_STREQ(person.get_firstname().c_str(), "");
+	//invalid input should not change firstname
+	EXPECT_FALSE(person.set_firstname("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 	EXPECT_STREQ(person.get_firstname().c_str(), "");
 	//exactly 64 characters will be accepted
 	EXPECT_TRUE(person.set_firstname("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
@@ -45,6 +81,9 @@ TEST_F(test_person, test_lastname) {
 	EXPECT_FALSE(person.set_lastname("aaaa2"));
 	//empty will be accepted
 	EXPECT_TRUE(person.set_lastname(""));
+	EXPECT_STREQ(person.get_lastname().c_str(), "");
+	//invalid input should not change original lastname
+	EXPECT_FALSE(person.set_lastname("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 	EXPECT_STREQ(person.get_lastname().c_str(), "");
 	//exactly 64 characters will be accepted
 	EXPECT_TRUE(person.set_lastname("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
@@ -69,9 +108,26 @@ TEST_F(test_person, test_age) {
 	EXPECT_FALSE(person.set_age(300));
 	EXPECT_TRUE(person.set_age(0));
 	EXPECT_EQ(person.get_age(), 0);
+	//invalid input should not change original age
+	EXPECT_FALSE(person.set_age(128));
+	EXPECT_TRUE(person.set_age(0));
 	EXPECT_TRUE(person.set_age(127));
 	EXPECT_EQ(person.get_age(), 127);
-	EXPECT_FALSE(person.set_age(128));
+}
+
+// test get_tagline and set_tagline
+TEST_F(test_person, test_gender) {
+	//any gender other than "m" or "f" will invalid
+	EXPECT_FALSE(person.set_gender(""));
+	EXPECT_FALSE(person.set_gender("mf"));
+
+	EXPECT_TRUE(person.set_gender("m"));
+	EXPECT_STREQ(person.get_gender().c_str(), "m");
+	//invalid input should not change original gender
+	EXPECT_FALSE(person.set_gender("bh"));
+	EXPECT_STREQ(person.get_gender().c_str(), "m");
+	EXPECT_TRUE(person.set_gender("f"));
+	EXPECT_STREQ(person.get_gender().c_str(), "f");
 }
 
 // test get_tagline and set_tagline
@@ -82,6 +138,9 @@ TEST_F(test_person, test_tagline) {
 	EXPECT_STREQ(person.get_tagline().c_str(), "1qz*3");
 	//empty will be accepted
 	EXPECT_TRUE(person.set_tagline(""));
+	EXPECT_STREQ(person.get_tagline().c_str(), "");
+	//invalid input should not change original tagline
+	EXPECT_FALSE(person.set_tagline("513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513charactersintotal513characters"));
 	EXPECT_STREQ(person.get_tagline().c_str(), "");
 }
 

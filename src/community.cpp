@@ -1,11 +1,5 @@
 #include "community.h"
 
-bool isNullPerson(Person p)
-{
-    //since only null person can have an empty username
-    return p.get_username() == "";
-}
-
 Community::Community()
     : name(""), people(map<string,Person>())
 {
@@ -37,7 +31,7 @@ bool Community::set_name(string _name)
 bool Community::add_person(Person _person)
 {
     const string username = _person.get_username();
-    if (isNullPerson(get_member(username))) {
+    if (get_member(username).is_null_person()) {
         people[username] = _person;
         return true;
     } else {
@@ -102,7 +96,7 @@ bool Community::send_msg(list<string> usernames, string msg)
     bool ret = true;
     for (auto const& username : usernames) {
         Person p = get_member(username);
-        if (!isNullPerson(p)) {
+        if (!p.is_null_person()) {
             p.get_msg(msg);
         } else {
             ret = false;

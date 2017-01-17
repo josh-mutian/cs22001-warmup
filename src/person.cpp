@@ -18,6 +18,39 @@ bool str_isalnum(const string s)
     return !s.empty() && it == s.end();
 }
 
+bool str_is_valid_username(const string _username)
+{
+    return str_isalnum(_username) &&
+           _username.length() <= 64 &&
+           _username.length() > 0 &&
+           isalpha(_username[0]);
+}
+
+bool str_is_valid_firstname(const string _firstname)
+{
+    return str_isalpha(_firstname) && _firstname.length() <= 64;
+}
+
+bool str_is_valid_lastname(const string _lastname)
+{
+    return str_isalpha(_lastname) && _lastname.length() <= 64;
+}
+
+bool str_is_valid_gender(const string _gender)
+{
+    return _gender == "m" || _gender == "f";
+}   
+
+bool num_is_valid_age(const int _age)
+{
+    return _age >= 0 && _age < 128;
+}
+
+bool str_is_valid_tagline(const string _tagline)
+{
+    return _tagline.length() <= 512;
+}
+
 Person::Person()
     : username(""), firstname(""), lastname(""), gender(""), age(0), tagline("")
 {
@@ -25,12 +58,27 @@ Person::Person()
 
 Person::Person(string _username, string _firstname, string _lastname,
                string _gender, int _age, string _tagline)
-    : username(_username), firstname(_firstname), lastname(_lastname),
-      gender(_gender), age(_age), tagline(_tagline)
 {
+    if (str_is_valid_username(_username) && str_is_valid_firstname(_firstname) && 
+        str_is_valid_lastname(_lastname) && num_is_valid_age(_age) && 
+        str_is_valid_gender(_gender) && str_is_valid_tagline(_tagline)) {
+        username = _username;
+        firstname = _firstname;
+        lastname = _lastname;
+        gender = _gender;
+        age = _age;
+        tagline = _tagline;
+    } else {
+        username = "";
+        firstname = "";
+        lastname = "";
+        gender = "";
+        age = 0;
+        tagline = "";
+    }
 }
 
-bool Person::is_same_Person(Person p) 
+bool Person::is_same_person(Person p) 
 {
     return username == p.get_username() &&
            firstname == p.get_firstname() &&
@@ -38,6 +86,12 @@ bool Person::is_same_Person(Person p)
            age == p.get_age() &&
            gender == p.get_gender() &&
            tagline == p.get_tagline();
+}
+
+bool Person::is_null_person()
+{
+    return username == "" && lastname == "" && firstname == "" &&
+           age == 0 && gender == "" && tagline == "";
 }
 
 string Person::get_username()
@@ -77,10 +131,7 @@ string Person::get_info()
 
 bool Person::set_username(string _username)
 {
-    if (str_isalnum(_username) &&
-        _username.length() <= 64 &&
-        _username.length() > 0 &&
-        isalpha(_username[0])) {
+    if (str_is_valid_username(_username)) {
         username = _username;
         return true;
     } else {
@@ -90,7 +141,7 @@ bool Person::set_username(string _username)
 
 bool Person::set_firstname(string _firstname)
 {
-    if (str_isalpha(_firstname) && _firstname.length() <= 64) {
+    if (str_is_valid_firstname(_firstname)) {
         firstname = _firstname;
         return true;
     } else {
@@ -101,7 +152,7 @@ bool Person::set_firstname(string _firstname)
 
 bool Person::set_lastname(string _lastname)
 {
-    if (str_isalpha(_lastname) && _lastname.length() <= 64) {
+    if (str_is_valid_lastname(_lastname)) {
         lastname = _lastname;
         return true;
     } else {
@@ -111,7 +162,7 @@ bool Person::set_lastname(string _lastname)
 
 bool Person::set_gender(string _gender)
 {
-    if (_gender == "m" || _gender == "f") {
+    if (str_is_valid_gender(_gender)) {
         gender = _gender;
         return true;
     } else {
@@ -121,7 +172,7 @@ bool Person::set_gender(string _gender)
 
 bool Person::set_age(int _age)
 {
-    if (_age >= 0 && _age < 128) {
+    if (num_is_valid_age(_age)) {
         age = _age;
         return true;
     } else {
@@ -130,7 +181,7 @@ bool Person::set_age(int _age)
 }
 bool Person::set_tagline(string _tagline)
 {
-    if (_tagline.length() <= 512) {
+    if (str_is_valid_tagline(_tagline)) {
         tagline = _tagline;
         return true;
     } else {

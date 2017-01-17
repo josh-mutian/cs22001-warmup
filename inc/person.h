@@ -30,7 +30,8 @@ class Person {
     Person(string _username, string _firstname, string _lastname, 
            string gender, int _age, string _tagline);
 
-    bool is_same_Person(Person p);
+    bool is_same_person(Person p);
+    bool is_null_person();
     string get_username();
     string get_firstname();
     string get_lastname();
