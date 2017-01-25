@@ -6,9 +6,29 @@ Please add your written answers to the question in the assignment specification
 to this file! *** ONLY ANSWERS IN THIS EXACT FILE WILL BE GRADED! ***
 
 1. 
-
-  a) [...]
+    a) Using a map object to store the collection of People with the Community 
+       class gives us a primary index, in our case the username, with which we 
+       could search a particular Person in constant time.
 
 2. 
+    a) 
+    b) On one side, we would need to add a private boolean property in the Person
+       class to flag if this Person has turned on the privacy option to only 
+       received messages from people in the same community with him/her. This
+       private property will have corresponding public setter and getter.
 
-[...]
+       On the other side, we would need to add a private Community list property 
+       in the Person class that refers to the communities a Person is in. This 
+       list could be empty since a Person could be in no community. Then, we
+       add a private method to the Person class, in_same_community_with(Person &p),
+       which searches through the Community list and check if p is in any of
+       the communities. Then, we would modify the prototype of
+       Person::get_msg(string msg) into Person::get_msg(string msg, Person &sender)
+       to pass in sender information. We could then add a filter in the get_msg
+       method stipulating that nothing will be done, i.e. inbox.push(msg) will
+       not be called if the privacy flag is on AND in_same_community_with(sender)
+       returns false.
+
+3.
+    a)
+    b)
