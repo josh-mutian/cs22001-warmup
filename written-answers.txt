@@ -6,29 +6,55 @@ Please add your written answers to the question in the assignment specification
 to this file! *** ONLY ANSWERS IN THIS EXACT FILE WILL BE GRADED! ***
 
 1. 
-    a) Using a map object to store the collection of People with the Community 
-       class gives us a primary index, in our case the username, with which we 
-       could search a particular Person in constant time.
+(a) 
+    Using a map object to store the collection of People with the Community 
+class gives us a primary index, in our case the username, with which we could 
+search a particular Person in constant time.
+
 
 2. 
-    a) 
-    b) On one side, we would need to add a private boolean property in the Person
-       class to flag if this Person has turned on the privacy option to only 
-       received messages from people in the same community with him/her. This
-       private property will have corresponding public setter and getter.
+(a)
+    By making the inbox property private, we can make sure that the inbox is 
+only accessible (in this case read) by the Person instance to which it 
+belongs. In this way, no other class instances can tamper with a Person's 
+inbox, giving the Person instances (which represent the actual users in this 
+case) the integrity and privacy of their messages.
 
-       On the other side, we would need to add a private Community list property 
-       in the Person class that refers to the communities a Person is in. This 
-       list could be empty since a Person could be in no community. Then, we
-       add a private method to the Person class, in_same_community_with(Person &p),
-       which searches through the Community list and check if p is in any of
-       the communities. Then, we would modify the prototype of
-       Person::get_msg(string msg) into Person::get_msg(string msg, Person &sender)
-       to pass in sender information. We could then add a filter in the get_msg
-       method stipulating that nothing will be done, i.e. inbox.push(msg) will
-       not be called if the privacy flag is on AND in_same_community_with(sender)
-       returns false.
+(b)
+    On one side, we would need to add a private boolean property in the Person 
+class to flag if this Person has turned on the privacy option to only received 
+messages from people in the same community with him/her. This private property 
+will have corresponding public setter and getter.
+    On the other side, we would need to add a private Community list property 
+in the Person class that refers to the communities a Person is in. This list 
+could be empty since a Person could be in no community. Then, we add a private 
+method to the Person class, in_same_community_with(Person &p), which searches 
+through the Community list and check if p is in any of the communities. Then, 
+we would modify the prototype of Person::get_msg(string msg) into 
+Person::get_msg(string msg, Person &sender) to pass in sender information. We 
+could then add a filter in the get_msg method stipulating that nothing will be 
+done, i.e. inbox.push(msg) will not be called if the privacy flag is on AND 
+in_same_community_with(sender) returns false.
+
 
 3.
-    a)
-    b)
+(a) 
+    The best part of this design is that it is a very clear and intuitive 
+object-oriented design. The main actors in the social network software, in 
+this case the users and communities they form, are represented clearly by the 
+classes Person and Community, which comes very naturally from the intention of 
+the software we are trying to build. In the implementation, we can see that 
+the basic functions we have implemented so far can all be built through adding 
+properties and functions into the two classes.
+
+(b)
+    The biggest potential problem about this design lies in the design of 
+class Person. We see that in the class Community, we have a list of Person 
+instances in a particular Community instance, implemented by a map. However, 
+if a user, a Person instance, want to know what are the communities that s/he 
+is in, under the current design, we have to iterate all the communities and 
+find those in which the Person instance is a member. This will not be a 
+feasible method as the scale of the software gets bigger and more and more 
+communities are added. Therefore, the lack of listing from a Person instance 
+to the communities it is in may cause scalability problem as the software gets 
+massive.
