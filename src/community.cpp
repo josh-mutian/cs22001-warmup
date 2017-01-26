@@ -52,7 +52,8 @@ Person Community::get_member(string username)
 list<string> Community::get_all_usernames()
 {
     list<string> usernames;
-    for (map<string,Person>::iterator it= people.begin(); it != people.end(); ++it) {
+    for (map<string,Person>::iterator it= people.begin(); 
+         it != people.end(); ++it) {
         usernames.push_back(it->first);
     }
     return usernames;
@@ -61,7 +62,8 @@ list<string> Community::get_all_usernames()
 void Community::print_all_usernames()
 {
     list<string> usernames = get_all_usernames();
-    for (list<string>::iterator it= usernames.begin(); it != usernames.end(); ++it) {
+    for (list<string>::iterator it= usernames.begin(); 
+         it != usernames.end(); ++it) {
         cout << *it << "; ";
     }
 }
@@ -69,7 +71,8 @@ void Community::print_all_usernames()
 list<Person> Community::find_member(string firstname)
 {
     list<Person> ret;
-    for (map<string,Person>::iterator it= people.begin(); it != people.end(); ++it) {
+    for (map<string,Person>::iterator it= people.begin(); 
+         it != people.end(); ++it) {
         Person p = it->second;
         if (p.get_firstname() == firstname) {
             ret.push_back(p);
@@ -81,7 +84,8 @@ list<Person> Community::find_member(string firstname)
 list<Person> Community::find_member(int age_lb, int age_ub)
 {
     list<Person> ret;
-    for (map<string,Person>::iterator it= people.begin(); it != people.end(); ++it) {
+    for (map<string,Person>::iterator it= people.begin(); 
+         it != people.end(); ++it) {
         Person p = it->second;
         int age = p.get_age();
         if (age <= age_ub && age >= age_lb) {
@@ -104,4 +108,3 @@ bool Community::send_msg(list<string> usernames, string msg)
     }
     return ret;
 }
-

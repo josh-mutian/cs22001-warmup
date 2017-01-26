@@ -5,16 +5,20 @@
 bool str_isalpha(const string str)
 {
     int size = str.size();
-    for(int i = 0; i < size; i++)
-        if((isalpha(str[i]) == 0) || (str[i] == ' '))
+    for (int i = 0; i < size; i++) {
+        if ((isalpha(str[i]) == 0) || (str[i] == ' ')) {
             return false;
+        }
+    }
     return true;
 }
 
 bool str_isalnum(const string s)
 {
     std::string::const_iterator it = s.begin();
-    while (it != s.end() && (std::isdigit(*it) || std::isalpha(*it))) ++it;
+    while (it != s.end() && (std::isdigit(*it) || std::isalpha(*it))) {
+        ++it;
+    }
     return !s.empty() && it == s.end();
 }
 
@@ -52,16 +56,20 @@ bool str_is_valid_tagline(const string _tagline)
 }
 
 Person::Person()
-    : username(""), firstname(""), lastname(""), gender(""), age(0), tagline("")
+    : username(""), firstname(""), lastname(""), gender(""), age(0),
+      tagline("")
 {
 }
 
 Person::Person(string _username, string _firstname, string _lastname,
                string _gender, int _age, string _tagline)
 {
-    if (str_is_valid_username(_username) && str_is_valid_firstname(_firstname) && 
-        str_is_valid_lastname(_lastname) && num_is_valid_age(_age) && 
-        str_is_valid_gender(_gender) && str_is_valid_tagline(_tagline)) {
+    if (str_is_valid_username(_username) && 
+        str_is_valid_firstname(_firstname) && 
+        str_is_valid_lastname(_lastname) && 
+        num_is_valid_age(_age) && 
+        str_is_valid_gender(_gender) && 
+        str_is_valid_tagline(_tagline)) {
         username = _username;
         firstname = _firstname;
         lastname = _lastname;
@@ -98,26 +106,32 @@ string Person::get_username()
 {
     return username;
 }
+
 string Person::get_firstname()
 {
     return firstname;
 }
+
 string Person::get_lastname()
 {
     return lastname;
 }
+
 string Person::get_gender()
 {
     return gender;
 }
+
 int Person::get_age()
 {
     return age;
 }
+
 string Person::get_tagline()
 {
     return tagline;
 }
+
 string Person::get_info()
 {
     string ret = string("username: ") + username +
@@ -179,6 +193,7 @@ bool Person::set_age(int _age)
         return false;
     }
 }
+
 bool Person::set_tagline(string _tagline)
 {
     if (str_is_valid_tagline(_tagline)) {
@@ -189,17 +204,17 @@ bool Person::set_tagline(string _tagline)
     }
 }
 
-
 bool Person::set_info(string _username, string _firstname, string _lastname,
                       int _age, string _gender, string _tagline)
 {
-    bool b1 = set_username(_username);
-    bool b2 = set_firstname(_firstname);
-    bool b3 = set_lastname(_lastname);
-    bool b4 = set_age(_age);
-    bool b5 = set_gender(_gender);
-    bool b6 = set_tagline(_tagline);
-    return b1 && b2 && b3 && b4 && b5 && b6;
+    bool valid_usr = set_username(_username);
+    bool valid_first = set_firstname(_firstname);
+    bool valid_last = set_lastname(_lastname);
+    bool valid_age = set_age(_age);
+    bool valid_gender = set_gender(_gender);
+    bool valid_tag = set_tagline(_tagline);
+    return valid_usr && valid_first && valid_last && valid_age && 
+           valid_gender && valid_tag;
 }
 
 void Person::send_msg(Person &recipient, string msg)
@@ -223,4 +238,3 @@ bool Person::read_msg()
         return false;
     }
 }
-
