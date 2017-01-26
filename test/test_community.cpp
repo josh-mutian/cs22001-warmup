@@ -122,5 +122,32 @@ TEST_F(test_community, get_member) {
 
 // test send_msg
 TEST_F(test_community, send_msg) {
+	p1.set_username("test1");
+	p2.set_username("test2");
+	p3.set_username("test3");
+	community.add_person(&p1);
+	community.add_person(&p2);
+	community.add_person(&p3);
+	list<string> l;
+	l.push_back("test1");
+	l.push_back("test2");
+	EXPECT_TRUE(community.send_msg(l, "test_msg\n"));
+	/* eyeball test if messages are received correctly */
+	p1.read_msg();
+	p1.read_msg();
+	p2.read_msg();
+	p2.read_msg();
+	p3.read_msg();
+
+	/* check that if one of the target usernames is not found:
+	 * 1. all targets that ARE found should receive the message
+	 * 2. send_msg() should return false */
+	l.push_back("test4");
+	EXPECT_FALSE(community.send_msg(l, "test_msg\n"));
+	p1.read_msg();
+	p1.read_msg();
+	p2.read_msg();
+	p2.read_msg();
+	p3.read_msg();
 }
 
