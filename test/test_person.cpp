@@ -171,12 +171,22 @@ TEST_F(test_person, test_info) {
 TEST_F(test_person, test_msg) {
 	//eye ball testing
 	person.send_msg(recipient, "test_message1\n");
+	cout << "EXPECT: test_message1\n";
+	cout << "   GET: ";
 	recipient.read_msg();
+	cout << "EXPECT: Inbox is empty. Cannot read any message.\n";
+	cout << "   GET: ";
 	recipient.read_msg();
 	person.send_msg(recipient, "test_message2\n");
 	person.send_msg(recipient, "test_message3\n");
+	cout << "EXPECT: test_message2\n";
+	cout << "   GET: ";
 	recipient.read_msg();
+	cout << "EXPECT: test_message3\n";
+	cout << "   GET: ";
 	recipient.read_msg();
+	cout << "EXPECT: Inbox is empty. Cannot read any message.\n";
+	cout << "   GET: ";
 	recipient.read_msg();
 }
 

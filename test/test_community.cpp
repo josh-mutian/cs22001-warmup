@@ -133,10 +133,20 @@ TEST_F(test_community, send_msg) {
 	l.push_back("test2");
 	EXPECT_TRUE(community.send_msg(l, "test_msg\n"));
 	/* eyeball test if messages are received correctly */
+	cout << "EXPECT: test_msg\n";
+	cout << "   GET: ";
 	p1.read_msg();
+	cout << "EXPECT: Inbox is empty. Cannot read any message.\n";
+	cout << "   GET: ";
 	p1.read_msg();
+	cout << "EXPECT: test_msg\n";
+	cout << "   GET: ";
 	p2.read_msg();
+	cout << "EXPECT: Inbox is empty. Cannot read any message.\n";
+	cout << "   GET: ";
 	p2.read_msg();
+	cout << "EXPECT: Inbox is empty. Cannot read any message.\n";
+	cout << "   GET: ";
 	p3.read_msg();
 
 	/* check that if one of the target usernames is not found:
@@ -144,10 +154,21 @@ TEST_F(test_community, send_msg) {
 	 * 2. send_msg() should return false */
 	l.push_back("test4");
 	EXPECT_FALSE(community.send_msg(l, "test_msg\n"));
+	/* eyeball test if messages are received correctly */
+	cout << "EXPECT: test_msg\n";
+	cout << "   GET: ";
 	p1.read_msg();
+	cout << "EXPECT: Inbox is empty. Cannot read any message.\n";
+	cout << "   GET: ";
 	p1.read_msg();
+	cout << "EXPECT: test_msg\n";
+	cout << "   GET: ";
 	p2.read_msg();
+	cout << "EXPECT: Inbox is empty. Cannot read any message.\n";
+	cout << "   GET: ";
 	p2.read_msg();
+	cout << "EXPECT: Inbox is empty. Cannot read any message.\n";
+	cout << "   GET: ";
 	p3.read_msg();
 }
 
