@@ -42,10 +42,10 @@ TEST_F(test_community, set_name) {
 TEST_F(test_community, add_person) {
 	p1.set_username("test1");
 	EXPECT_FALSE(community.get_member("test1").is_same_person(p1));
-	EXPECT_TRUE(community.add_person(p1));
+	EXPECT_TRUE(community.add_person(&p1));
 	EXPECT_TRUE(community.get_member("test1").is_same_person(p1));
 	//adding person who is already a member should return false
-	EXPECT_FALSE(community.add_person(p1));
+	EXPECT_FALSE(community.add_person(&p1));
 }
 
 // test get_all_usernames
@@ -58,13 +58,13 @@ TEST_F(test_community, get_all_usernames) {
 	list<string> ret_usr_names = community.get_all_usernames();
 	EXPECT_TRUE(ret_usr_names.size() == 0);
 
-	community.add_person(p1);
+	community.add_person(&p1);
 	ret_usr_names = community.get_all_usernames();
 	EXPECT_TRUE(ret_usr_names.size() == 1 && 
 			    ret_usr_names.front() == "test1");
 
-	community.add_person(p2);
-	community.add_person(p3);
+	community.add_person(&p2);
+	community.add_person(&p3);
 	ret_usr_names = community.get_all_usernames();
 	// Find three names respectively.
 	bool p1_found = false, p2_found = false, p3_found = false;
@@ -88,7 +88,7 @@ TEST_F(test_community, find_member) {
 	p1.set_firstname("Frank");
 	p1.set_age(12);
 	EXPECT_TRUE(community.find_member("Frank").size() == 0);
-	community.add_person(p1);
+	community.add_person(&p1);
 	list<Person> members_found = community.find_member("Frank");
 	EXPECT_TRUE(members_found.size() == 1 && 
 			    members_found.front().is_same_person(p1));
@@ -116,7 +116,7 @@ TEST_F(test_community, find_member) {
 TEST_F(test_community, get_member) {
 	p1.set_username("test1");
 	EXPECT_FALSE(community.get_member("test1").is_same_person(p1));
-	EXPECT_TRUE(community.add_person(p1));
+	EXPECT_TRUE(community.add_person(&p1));
 	EXPECT_TRUE(community.get_member("test1").is_same_person(p1));
 }
 

@@ -15,12 +15,12 @@ class Community {
   private:
 
     string name;
-    map<string,Person> people;
+    map<string, Person*> people;
 
   public:
 
     Community();
-    Community(string _name, map<string,Person> _people);
+    Community(string _name, map<string,Person*> _people);
 
     string get_name();
     bool set_name(string _name);
@@ -29,7 +29,7 @@ class Community {
     // make sure the username of _person is not used yet
     // make sure the affliation of _person is same as organization of this community
     // the return value indicates whether this adding method is successful or not
-    bool add_person(Person _person);
+    bool add_person(Person *_person);
 
     // return all usernames of members as a list
     list<string> get_all_usernames();
@@ -37,6 +37,9 @@ class Community {
 
     // find users with a certain first name
     list<Person> find_member(string firstname);
+
+    //find member (pointer) by username
+    Person* get_member_pointer(string username);
     
     // find users within certain age range
     list<Person> find_member(int age_lb, int age_ub);
@@ -49,6 +52,7 @@ class Community {
     bool send_msg(list<string> usernames, string msg);
     
 };
+
 
 #endif /* COMMUNITY_H */
 
