@@ -46,36 +46,35 @@ TEST_F(test_community, add_person) {
 	EXPECT_TRUE(community.get_member("test1").is_same_person(p1));
 	//adding person who is already a member should return false
 	EXPECT_FALSE(community.add_person(p1));
-	//??how to test same community
-	//??also, interleaving logic between add_person and get_member
 }
 
 // test get_all_usernames
 //   there's no EXPERT functions for comparing non-built-in types, you need to
 //   do some parsing by yourself
 TEST_F(test_community, get_all_usernames) {
-	p1.set_username("test_1");
-	p2.set_username("test_2");
-	p3.set_username("test_3");
+	p1.set_username("test1");
+	p2.set_username("test2");
+	p3.set_username("test3");
 	list<string> ret_usr_names = community.get_all_usernames();
 	EXPECT_TRUE(ret_usr_names.size() == 0);
 
-	community.add_member(p1);
+	community.add_person(p1);
 	ret_usr_names = community.get_all_usernames();
 	EXPECT_TRUE(ret_usr_names.size() == 1 && 
-			    ret_usr_names.front() == "test_1");
+			    ret_usr_names.front() == "test1");
 
-	community.add_member(p2);
-	community.add_member(p3);
+	community.add_person(p2);
+	community.add_person(p3);
+	ret_usr_names = community.get_all_usernames();
 	// Find three names respectively.
 	bool p1_found = false, p2_found = false, p3_found = false;
 	for (list<string>::iterator it = ret_usr_names.begin();
-		 it != ret_usr_names.end(): ++it) {
-		if (*it == "test_1") {
+		 it != ret_usr_names.end(); ++it) {
+		if (*it == "test1") {
 			p1_found = true;
-		} else if (*it == "test_2") {
+		} else if (*it == "test2") {
 			p2_found = true;
-		} else if (*it == "test_3") {
+		} else if (*it == "test3") {
 			p3_found = true;
 		}
 	}
@@ -89,7 +88,7 @@ TEST_F(test_community, find_member) {
 	p1.set_firstname("Frank");
 	p1.set_age(12);
 	EXPECT_TRUE(community.find_member("Frank").size() == 0);
-	community.add_member(p1);
+	community.add_person(p1);
 	list<Person> members_found = community.find_member("Frank");
 	EXPECT_TRUE(members_found.size() == 1 && 
 			    members_found.front().is_same_person(p1));
