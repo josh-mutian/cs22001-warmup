@@ -54,10 +54,63 @@ TEST_F(test_community, add_person) {
 //   there's no EXPERT functions for comparing non-built-in types, you need to
 //   do some parsing by yourself
 TEST_F(test_community, get_all_usernames) {
+	p1.set_username("test_1");
+	p2.set_username("test_2");
+	p3.set_username("test_3");
+	list<string> ret_usr_names = community.get_all_usernames();
+	EXPECT_TRUE(ret_usr_names.size() == 0);
+
+	community.add_member(p1);
+	ret_usr_names = community.get_all_usernames();
+	EXPECT_TRUE(ret_usr_names.size() == 1 && 
+			    ret_usr_names.front() == "test_1");
+
+	community.add_member(p2);
+	community.add_member(p3);
+	// Find three names respectively.
+	bool p1_found = false, p2_found = false, p3_found = false;
+	for (list<string>::iterator it = ret_usr_names.begin();
+		 it != ret_usr_names.end(): ++it) {
+		if (*it == "test_1") {
+			p1_found = true;
+		} else if (*it == "test_2") {
+			p2_found = true;
+		} else if (*it == "test_3") {
+			p3_found = true;
+		}
+	}
+	EXPECT_TRUE(ret_usr_names.size() == 3 && p1_found && p2_found && p3_found);
 }
 
 // test find_member by first name and age range
 TEST_F(test_community, find_member) {
+	// Find by first name.
+	p1.set_username("test_1");
+	p1.set_firstname("Frank");
+	p1.set_age(12);
+	EXPECT_TRUE(community.find_member("Frank").size() == 0);
+	community.add_member(p1);
+	list<Person> members_found = community.find_member("Frank");
+	EXPECT_TRUE(members_found.size() == 1 && 
+			    members_found.front().is_same_person(p1));
+
+	// Find by age range.
+	members_found = community.find_member(0, 11);
+	EXPECT_TRUE(members_found.size() == 0);
+	members_found = community.find_member(0, 15);
+	EXPECT_TRUE(members_found.size() == 1 && 
+			    members_found.front().is_same_person(p1));
+	members_found = community.find_member(0, 12);
+	EXPECT_TRUE(members_found.size() == 1 && 
+			    members_found.front().is_same_person(p1));
+	members_found = community.find_member(12, 12);
+	EXPECT_TRUE(members_found.size() == 1 && 
+			    members_found.front().is_same_person(p1));
+	members_found = community.find_member(12, 20);
+	EXPECT_TRUE(members_found.size() == 1 && 
+			    members_found.front().is_same_person(p1));
+	members_found = community.find_member(13, 200);
+	EXPECT_TRUE(members_found.size() == 0);
 }
 
 // test get_member
