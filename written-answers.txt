@@ -15,10 +15,14 @@ search a particular Person in constant time.
 2. 
 (a)
     By making the inbox property private, we can make sure that the inbox is 
-only accessible (in this case read) by the Person instance to which it 
-belongs. In this way, no other class instances can tamper with a Person's 
+only directly accessible (in this case read) by the Person instance to which 
+it belongs. In this way, no other class instances can tamper with a Person's 
 inbox, giving the Person instances (which represent the actual users in this 
 case) the integrity and privacy of their messages.
+    Also, by disabling other classes and instances to change the content of 
+inbox directly, whenever we find a bug pertaining to inbox, we are sure that
+the bug exists in the implementation of the Person class, and thus decrease
+the complexity of the debugging process.
 
 (b)
     On one side, we would need to add a private boolean property in the Person 
@@ -55,6 +59,12 @@ if a user, a Person instance, want to know what are the communities that s/he
 is in, under the current design, we have to iterate all the communities and 
 find those in which the Person instance is a member. This will not be a 
 feasible method as the scale of the software gets bigger and more and more 
-communities are added. Therefore, the lack of listing from a Person instance 
-to the communities it is in may cause scalability problem as the software gets 
-massive.
+communities are added. 
+    For example, say that a Person changes its username (which is doable
+by the setter function implemented), all of the Community instances of which
+the Person instance is a member should also be updated because within each
+Community instance the map is from username to Person instance. Under the 
+current design, since the Person instance does not keep a list of communities, 
+all Community instances have to be iterated.
+    Therefore, the lack of listing from a Person instance to the communities 
+it is in may cause scalability problem as the software gets massive.
